@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tap Guard ec · Tu contacto guardado en 2 toques</title>
+<style>
+:root{--bg:#060b1a;--bg2:#0a1330;--tx:#f2f6ff;--mu:#9fb0d0;--neon:#00c8ff;--line:#12306a;--wa:#25d366;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#060b1a;--tx:#f2f6ff}}
+:root[data-theme="dark"]{--bg:#060b1a;--tx:#f2f6ff}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55;padding-bottom:84px;overflow-x:hidden}
+section{padding:56px 20px;max-width:760px;margin:0 auto;text-align:center}
+h1{font-size:clamp(2.6rem,11vw,4.2rem);line-height:1;font-weight:800;letter-spacing:-1px}
+h2{font-size:clamp(1.5rem,6vw,2.1rem);line-height:1.2;font-weight:800;margin-bottom:14px}
+.n{color:var(--neon)}
+.mu{color:var(--mu)}
+.slogan{font-size:clamp(1.05rem,4.4vw,1.35rem);margin:14px auto 0;max-width:520px}
+.slogan b{color:var(--neon)}
+/* carrusel */
+.car{margin:28px auto 0;max-width:420px;border:1px solid var(--line);border-radius:22px;background:radial-gradient(circle at 50% 0,#0e2150,var(--bg2));padding:18px 12px 12px;box-shadow:0 0 40px #00c8ff22}
+.slide{display:none}.slide.on{display:block}
+.stage{position:relative;height:340px;display:flex;justify-content:center}
+.cap{font-size:.9rem;color:var(--mu);margin-top:6px;min-height:22px}
+.dots{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.dots button{width:10px;height:10px;border-radius:50%;border:0;background:#2a3d6e;cursor:pointer;padding:0}
+.dots button.on{background:var(--neon);box-shadow:0 0 8px var(--neon)}
+.card{width:250px;height:142px;border-radius:14px;background:linear-gradient(135deg,#0b1a40,#050b1c);border:1.5px solid var(--neon);box-shadow:0 0 22px #00c8ff55;padding:14px;text-align:left;position:absolute;top:14px}
+.card .nm{font-weight:800;font-size:1.02rem}.card .rl{font-size:.74rem;color:var(--neon);margin-bottom:8px}
+.card .ln{font-size:.72rem;color:var(--mu)}
+.av{width:34px;height:34px;border-radius:50%;background:var(--neon);margin-bottom:8px;position:relative;overflow:hidden}
+.av:before{content:"";position:absolute;left:11px;top:6px;width:12px;height:12px;border-radius:50%;background:#06122c}
+.av:after{content:"";position:absolute;left:5px;top:20px;width:24px;height:20px;border-radius:50%;background:#06122c}
+.flip{perspective:900px;position:absolute;top:60px;left:50%;margin-left:-125px;width:250px;height:142px}
+.flipper{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:spin 7s ease-in-out infinite}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;border:1.5px solid var(--neon);background:linear-gradient(135deg,#0b1a40,#050b1c);box-shadow:0 0 26px #00c8ff66;padding:14px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.face.bk{transform:rotateY(180deg)}
+.logo{font-size:1.9rem;font-weight:800}.logo i{font-style:normal;color:var(--neon)}
+.face small{font-size:.66rem;margin-top:6px}
+.qr{width:46px;height:46px;background:repeating-conic-gradient(#fff 0 25%,#06122c 0 50%) 0 0/9px 9px;border:3px solid #fff;border-radius:4px}
+@keyframes spin{0%,25%{transform:rotateY(0)}45%,70%{transform:rotateY(180deg)}90%,100%{transform:rotateY(360deg)}}
+.phone{position:absolute;left:50%;margin-left:-45px;top:178px;width:90px;height:156px;border:3px solid #fff;border-radius:18px;background:#070d20;animation:come 7s ease-in-out infinite;overflow:hidden}
+.phone:before{content:"";position:absolute;top:5px;left:32px;width:22px;height:4px;border-radius:3px;background:#fff}
+.scr{position:absolute;inset:18px 6px 8px;opacity:0;animation:pop 7s infinite;text-align:center;font-size:.62rem}
+.scr .av{margin:4px auto 6px}.scr b{display:block;font-size:.66rem}
+.scr span{display:block;color:var(--mu);margin-bottom:6px}
+.scr em{display:block;font-style:normal;background:var(--neon);color:#04122a;border-radius:6px;padding:4px 0;font-weight:700}
+.wv{position:absolute;left:50%;margin-left:-26px;top:152px;width:52px;height:26px;opacity:0;animation:wv 7s infinite}
+.wv svg{width:100%;height:100%}
+@keyframes come{0%,8%{transform:translateY(40px)}35%,85%{transform:translateY(-50px)}100%{transform:translateY(40px)}}
+@keyframes pop{0%,38%{opacity:0;transform:scale(.8)}46%,85%{opacity:1;transform:scale(1)}100%{opacity:0}}
+@keyframes wv{0%,12%{opacity:0}22%,34%{opacity:1}42%,100%{opacity:0}}
+/* bloques */
+.big{font-size:clamp(1.5rem,6.5vw,2.3rem);font-weight:800;line-height:1.2;margin-top:22px}
+.q{font-size:clamp(1.3rem,5.4vw,1.9rem);font-weight:700;line-height:1.3}
+.alt{background:var(--bg2);max-width:none}.alt>div{max-width:720px;margin:0 auto}
+.pos{margin-top:22px;font-size:1.15rem;font-style:italic;color:var(--neon)}
+ul.ck{list-style:none;padding:0;text-align:left;margin:18px 0 0}
+ul.ck li{padding:12px 14px 12px 44px;position:relative;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#0a1534}
+ul.ck li:before{content:"✓";position:absolute;left:14px;top:11px;width:22px;height:22px;border-radius:50%;background:var(--neon);color:#04122a;font-weight:800;text-align:center;line-height:22px;font-size:.85rem}
+.offer{border:2px solid var(--neon);border-radius:22px;padding:26px 20px;background:linear-gradient(160deg,#0c1d4a,#060b1a);box-shadow:0 0 40px #00c8ff33;margin-top:20px}
+.offer ul{list-style:none;padding:0;text-align:left;max-width:360px;margin:16px auto}
+.offer li{padding:6px 0 6px 28px;position:relative}
+.offer li:before{content:"✓";position:absolute;left:0;color:var(--neon);font-weight:800}
+.price{font-size:3.4rem;font-weight:800;color:var(--neon);line-height:1}.price small{font-size:1rem;color:var(--mu)}
+.old{display:flex;align-items:center;gap:12px;justify-content:center;margin:16px 0;font-size:.9rem;color:var(--mu);text-align:left}
+.oc{width:54px;height:34px;border-radius:5px;background:#ddd;position:relative;flex:none;filter:grayscale(1);opacity:.7}
+.oc:before{content:"";position:absolute;left:6px;top:8px;width:30px;height:4px;background:#000;box-shadow:0 8px 0 #666,0 14px 0 #888}
+.oc:after{content:"";position:absolute;left:-6px;right:-6px;top:15px;height:4px;background:#ff3b3b;transform:rotate(-25deg);border-radius:2px}
+.btn{display:inline-block;background:var(--wa);color:#04210f;font-weight:800;text-decoration:none;padding:16px 26px;border-radius:50px;font-size:1.05rem;box-shadow:0 0 24px #25d36666;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:#060b1aee;border-top:1px solid var(--line);text-align:center;z-index:20;backdrop-filter:blur(8px)}
+.bar .btn{width:100%;max-width:420px;padding:13px 18px}
+footer{padding:20px;text-align:center;color:var(--mu);font-size:.8rem}
+.ic{font-size:3rem;margin-bottom:8px;filter:drop-shadow(0 0 12px #00c8ff88);animation:fl 3s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-6px)}}
+.row3{display:flex;gap:10px;margin:22px 0 4px}.row3>div{flex:1;border:1px solid var(--line);border-radius:14px;padding:14px 6px;background:#0a1534;font-size:.85rem}.row3 b{display:block;font-size:1.9rem;font-weight:400}
+ul.ck li:before{background:none;font-size:1.35rem;width:auto;line-height:1.2;left:12px}
+ul.ck li:nth-child(1):before{content:"👔"}ul.ck li:nth-child(2):before{content:"🚀"}ul.ck li:nth-child(3):before{content:"🤝"}ul.ck li:nth-child(4):before{content:"🏠"}ul.ck li:nth-child(5):before{content:"🎪"}ul.ck li:nth-child(6):before{content:"⭐"}ul.ck li:nth-child(7):before{content:"🛡️"}
+.offer li:before{display:none}.offer li{padding-left:0}.offer li span{display:inline-block;width:32px;font-size:1.2rem}
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation-duration:0s!important}}
+</style>
+</head>
+<body>
+
+<section id="inicio">
+  <h1>Tap <span class="n">GUARD</span> <span class="n" style="font-size:.4em;letter-spacing:0">ec</span></h1>
+  <p class="slogan">Tu <b>CONTACTO</b> guardado en el celular de tu <b>CLIENTE</b> en <b>2 toques</b></p>
+
+  <div class="car" aria-label="Demostración de tarjetas Tap Guard">
+    <div class="slide on" data-cap="La tarjeta Tap Guard: frente y reverso">
+      <div class="stage">
+        <div class="flip"><div class="flipper">
+          <div class="face"><div class="logo">Tap <i>Guard</i></div><small class="mu">Tu contacto guardado. <span class="n">Tu billetera protegida.</span></small></div>
+          <div class="face bk"><div style="display:flex;gap:12px;align-items:center"><div class="qr"></div><div style="text-align:left"><div class="n" style="font-weight:800;font-size:.8rem">TAP GUARD</div><div style="font-weight:800">099 017 0282</div></div></div><small class="n" style="font-weight:700">TU CONTACTO GUARDADO EN 2 TOQUES</small></div>
+        </div></div>
+      </div>
+    </div>
+    <div class="slide" data-cap="Abogado: acerca el celular y el contacto queda guardado">
+      <div class="stage">
+        <div class="card"><div class="av"></div><div class="nm">Dr. Andrés Villacís</div><div class="rl">Abogado · Derecho Penal y Tránsito</div><div class="ln">📞 099 123 4567 · Ambato</div></div>
+        <div class="wv"><svg viewBox="0 0 52 26" fill="none" stroke="#00c8ff" stroke-width="3" stroke-linecap="round"><path d="M4 22a22 22 0 0 1 44 0"/><path d="M13 22a13 13 0 0 1 26 0"/><path d="M21 22a5 5 0 0 1 10 0"/></svg></div>
+        <div class="phone"><div class="scr"><div class="av"></div><b>Dr. Andrés Villacís</b><span>Abogado</span><em>Guardar contacto</em></div></div>
+      </div>
+    </div>
+    <div class="slide" data-cap="Inmobiliario: tu prospecto te tiene a un toque">
+      <div class="stage">
+        <div class="card"><div class="av"></div><div class="nm">Carla Mena</div><div class="rl">Asesora Inmobiliaria · Casas y terrenos</div><div class="ln">📞 098 765 4321 · Quito</div></div>
+        <div class="wv"><svg viewBox="0 0 52 26" fill="none" stroke="#00c8ff" stroke-width="3" stroke-linecap="round"><path d="M4 22a22 22 0 0 1 44 0"/><path d="M13 22a13 13 0 0 1 26 0"/><path d="M21 22a5 5 0 0 1 10 0"/></svg></div>
+        <div class="phone"><div class="scr"><div class="av"></div><b>Carla Mena</b><span>Asesora Inmobiliaria</span><em>Guardar contacto</em></div></div>
+      </div>
+    </div>
+    <div class="cap" id="cap"></div>
+    <div class="dots" id="dots"><button class="on" aria-label="Tarjeta Tap Guard"></button><button aria-label="Abogado"></button><button aria-label="Asesor inmobiliario"></button></div>
+  </div>
+</section>
+
+<section class="alt"><div>
+  <div class="ic">🗄️</div>
+  <p class="q">¿Cuántas tarjetas has entregado que probablemente terminaron olvidadas en un cajón?</p>
+  <p class="big n">No basta con que conozcan tu nombre. Necesitan poder encontrarte fácilmente.</p>
+</div></section>
+
+<section>
+  <div class="ic">📲</div>
+  <h2>Conoce una nueva forma de presentarte</h2>
+  <p><b>TAP GUARD</b> es una tarjeta de contacto con tecnología <b>NFC</b> que permite compartir tu información acercándola a un celular compatible.</p>
+  <p class="mu" style="margin-top:12px">Sin dictar tu número. Sin escribir tus datos a mano. Una presentación más práctica, moderna y memorable.</p>
+  <div class="row3"><div><b>📲</b>Acercas</div><div><b>💾</b>Se guarda</div><div><b>🛡️</b>Protege</div></div>
+  <p class="pos">«No es solamente lo que entregas. Es la experiencia que dejas».</p>
+</section>
+
+<section class="alt"><div>
+  <div class="ic">🎯</div>
+  <h2>Este producto es para ti si:</h2>
+  <ul class="ck">
+    <li>Eres abogado, médico, arquitecto, ingeniero o profesional independiente y quieres proyectar una imagen más profesional.</li>
+    <li>Eres empresario o emprendedor y necesitas generar conexiones comerciales.</li>
+    <li>Trabajas en ventas y buscas facilitar que tus prospectos guarden tus datos.</li>
+    <li>Eres asesor, consultor, agente inmobiliario o ejecutivo y conoces el valor de cada contacto.</li>
+    <li>Asistes a reuniones, ferias, eventos empresariales o espacios de networking.</li>
+    <li>Estás construyendo una marca personal y quieres diferenciarte.</li>
+    <li>Quieres que tus tarjetas de crédito estén protegidas de lecturas no autorizadas: la señal de nuestra tarjeta las protege.</li>
+  </ul>
+</div></section>
+
+<section id="oferta">
+  <div class="offer">
+    <div class="n" style="font-weight:800;letter-spacing:2px">PRODUCTO TAP GUARD</div>
+    <h2 style="margin-top:6px">TU TARJETA NFC</h2>
+    <p class="mu">Una nueva forma de compartir tus datos profesionales.</p>
+    <p style="margin-top:16px;font-weight:700">¿Qué incluye?</p>
+    <ul>
+      <li><span>💳</span>Tu tarjeta física inteligente</li>
+      <li><span>🎨</span>Diseño personalizado</li>
+      <li><span>🌐</span>Mini portafolio profesional web</li>
+      <li><span>💡</span>Instrucciones y tips de uso semanales</li>
+      <li><span>🔳</span>Código QR propio</li>
+    </ul>
+    <div class="price">$27,90 <small>USD</small></div>
+    <div class="old"><div class="oc"></div><div>Olvídate de los paquetes de tarjetas de cartón.</div></div>
+    <a class="btn" href="https://wa.me/593990170282?text=%C2%A1Hola%21%20Estoy%20interesado%20en%20TAP%20GUARD.%20Quisiera%20conocer%20los%20paquetes%20disponibles%20y%20c%C3%B3mo%20puedo%20adquirir%20mi%20tarjeta%20NFC." target="_blank" rel="noopener">CONTACTA AHORA CON UN ASESOR</a>
+  </div>
+</section>
+
+<footer>Tap Guard ec · WhatsApp 099 017 0282</footer>
+
+<div class="bar"><a class="btn" href="https://wa.me/593990170282?text=%C2%A1Hola%21%20Estoy%20interesado%20en%20TAP%20GUARD.%20Quisiera%20conocer%20los%20paquetes%20disponibles%20y%20c%C3%B3mo%20puedo%20adquirir%20mi%20tarjeta%20NFC." target="_blank" rel="noopener">CONTACTA AHORA CON UN ASESOR</a></div>
+
+<script>
+(function(){
+var s=document.querySelectorAll('.slide'),d=document.querySelectorAll('#dots button'),c=document.getElementById('cap'),i=0,t;
+function show(n){i=n;s.forEach(function(x,k){x.classList.toggle('on',k===n);d[k].classList.toggle('on',k===n)});c.textContent=s[n].getAttribute('data-cap');clearTimeout(t);t=setTimeout(function(){show((i+1)%s.length)},7200)}
+d.forEach(function(b,k){b.addEventListener('click',function(){show(k)})});
+show(0);
+document.documentElement.classList.add('js');
+var els=document.querySelectorAll('section>*,section>div>*,.ck li,.row3>div');
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12});els.forEach(function(el,k){el.classList.add('rv');el.style.transitionDelay=(k%4)*80+'ms';io.observe(el)})}else{els.forEach(function(el){el.classList.add('in')})}
+})();
+</script>
+</body>
+</html>
